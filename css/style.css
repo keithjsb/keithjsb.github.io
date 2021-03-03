@@ -1,0 +1,16 @@
+body {
+	position: relative;
+}
+header {
+	padding: 156px 0;
+}
+section {
+	padding: 100px 0;
+}
+img {
+	height: 100%;
+	width: 100%;
+}
+#btnSubmit {
+	padding: 5px 50px;
+}
