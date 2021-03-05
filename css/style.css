@@ -14,3 +14,18 @@ img {
 #btnSubmit {
 	padding: 5px 50px;
 }
+
+#skills ul {
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+}
+#skills li {
+    display: inline-block;
+    margin: 7px;
+    padding: 5px 10px;
+    background: #e4e4ea;
+    list-style: none;
+    cursor: default;
+    font-size: 1.2em;
+}
