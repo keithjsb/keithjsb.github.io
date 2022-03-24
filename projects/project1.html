@@ -44,7 +44,7 @@
     <!-- Sections -->
     <header>
         <div class="container text-center">
-            <h4 id="resolution1"> hello! I'm Keith Benitez </h4>
+            <h4 id="resolution1"></h4>
             <hr>
             <h4 id="resolution2"></h4>
             <!-- <h1> hello! I'm Keith Benitez </h1>
@@ -56,7 +56,7 @@
     <section id="project" class="jumbotron">
         <div class="container">
             <div class="row">
-                <video id="webcam-preview"></video>
+                <video id="scannerVideo"></video>
                 <p id="result"></p>
             </div>
         </div>
@@ -79,7 +79,70 @@
     <script type="text/javascript" src="../js/index.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
     <script>
-        
+        const codeReader = new ZXing.BrowserMultiFormatReader()
+        $(document).ready(function () {
+            console.log($("#scannerVideo").width());
+            $("#scannerVideo").width(500)
+            console.log($("#scannerVideo").width());
+            
+
+
+            codeReader.listVideoInputDevices()
+            .then((videoInputDevices) => {
+            const sourceSelect = document.getElementById('sourceSelect')
+            selectedDeviceId = videoInputDevices[0].deviceId
+            // if (videoInputDevices.length >= 1) {
+            //     videoInputDevices.forEach((element) => {
+            //     const sourceOption = document.createElement('option')
+            //     sourceOption.text = element.label
+            //     sourceOption.value = element.deviceId
+            //     sourceSelect.appendChild(sourceOption)
+            //     })
+
+            //     sourceSelect.onchange = () => {
+            //     selectedDeviceId = sourceSelect.value;
+            //     };
+
+            //     const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+            //     sourceSelectPanel.style.display = 'block'
+            // }
+
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'scannerVideo', (result, err) => {
+                if (result) {
+                    console.log(result)
+                    // document.getElementById('result').textContent = result.text
+                    alert(result.text)
+                }
+                if (err && !(err instanceof ZXing.NotFoundException)) {
+                    console.error(err)
+                    // document.getElementById('result').textContent = err
+                    alert(err)
+                }
+                })
+                console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+
+            // document.getElementById('startButton').addEventListener('click', () => {
+            //     codeReader.decodeFromVideoDevice(selectedDeviceId, 'scannerVideo', (result, err) => {
+            //     if (result) {
+            //         console.log(result)
+            //         document.getElementById('result').textContent = result.text
+            //     }
+            //     if (err && !(err instanceof ZXing.NotFoundException)) {
+            //         console.error(err)
+            //         document.getElementById('result').textContent = err
+            //     }
+            //     })
+            //     console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+            // })
+
+            // document.getElementById('resetButton').addEventListener('click', () => {
+            //     codeReader.reset()
+            //     document.getElementById('result').textContent = '';
+            //     console.log('Reset.')
+            // })
+
+            })
+        });
     </script>
 </body>
 
