@@ -82,7 +82,8 @@
         const codeReader = new ZXing.BrowserMultiFormatReader()
         $(document).ready(function () {
             console.log($("#scannerVideo").width());
-            $("#scannerVideo").width(500)
+            console.log(screen.width);
+            $("#scannerVideo").width(screen.width * 0.7);
             console.log($("#scannerVideo").width());
             
 
