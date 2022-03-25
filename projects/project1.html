@@ -12,7 +12,7 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="css/bootstrap.css" /> -->
     <link rel="stylesheet" href="../css/style.css" />
-    <title>Keith Benitez | project1 - test</title>
+    <title>Keith Benitez | project1 - zxing-js</title>
 </head>
 
 <body data-spy="scroll" data-target=".navbar">
@@ -50,6 +50,10 @@
             <!-- <h1> hello! I'm Keith Benitez </h1>
             <p class="lead"><a href="https://www.linkedin.com/in/keithbenitez" target="_blank">Linkedin</a> | <a
                     href="https://github.com/keithjsb" target="_blank">Github</a></p> -->
+            <div class="row">
+                <button type="button" class="btn btn-primary" id="btnStart">Start</button>
+                <button type="button" class="btn btn-primary" id="btnStop">Stop</button>
+            </div>
         </div>
     </header>
 
@@ -59,6 +63,7 @@
                 <video id="scannerVideo"></video>
                 <p id="result"></p>
             </div>
+            
         </div>
     </section>
     <!-- Footer -->
@@ -84,14 +89,35 @@
             console.log($("#scannerVideo").width());
             console.log(screen.width);
             $("#scannerVideo").width(screen.width * 0.7);
-            console.log($("#scannerVideo").width());
+            $("#scannerVideo").height(screen.width * 0.7);
+            
+            codeReader.listVideoInputDevices()
+                .then((videoInputDevices) => {
+                selectedDeviceId = videoInputDevices[0].deviceId
+
+            $("#btnStart").click(function() {
+                codeReader.decodeFromVideoDevice(selectedDeviceId, 'scannerVideo', (result, err) => {
+                if (result) {
+                    console.log(result)
+                    // document.getElementById('result').textContent = result.text
+                    alert(result.format + " - " + result.text)
+                    
+                }
+                if (err && !(err instanceof ZXing.NotFoundException)) {
+                    console.error(err)
+                    // document.getElementById('result').textContent = err
+                    alert(err)
+                }
+                })
+                console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+            });
+
+            $("#btnStop").click(function() {
+                codeReader.reset()
+            });
             
 
-
-            codeReader.listVideoInputDevices()
-            .then((videoInputDevices) => {
-            const sourceSelect = document.getElementById('sourceSelect')
-            selectedDeviceId = videoInputDevices[0].deviceId
+            
             // if (videoInputDevices.length >= 1) {
             //     videoInputDevices.forEach((element) => {
             //     const sourceOption = document.createElement('option')
@@ -108,19 +134,7 @@
             //     sourceSelectPanel.style.display = 'block'
             // }
 
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'scannerVideo', (result, err) => {
-                if (result) {
-                    console.log(result)
-                    // document.getElementById('result').textContent = result.text
-                    alert(result.text)
-                }
-                if (err && !(err instanceof ZXing.NotFoundException)) {
-                    console.error(err)
-                    // document.getElementById('result').textContent = err
-                    alert(err)
-                }
-                })
-                console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+            
 
             // document.getElementById('startButton').addEventListener('click', () => {
             //     codeReader.decodeFromVideoDevice(selectedDeviceId, 'scannerVideo', (result, err) => {
@@ -143,6 +157,9 @@
             // })
 
             })
+
+            console.log($("#scannerVideo").width());
+            console.log($("#scannerVideo").height());
         });
     </script>
 </body>
